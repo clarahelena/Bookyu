@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
+import tkinter as tk
+import webbrowser
+import io
+import contextlib
 
-
-print('\nSeja Bem-Vinda ao Bookyu ^^')
+print('\nSeja Bem-Vindo(a) ao Bookyu ^^')
 nome = input('\nQual é o seu nome: ')
 idade = int(input('\nQual é sua idade: '))
 cidade = input('\nQual é a sua cidade: ')
@@ -17,7 +20,7 @@ while True:
         livro_prefer = 'Fisico'
         break
     elif escolha_prefer == '2':
-        livro_prefer == 'Digital'
+        livro_prefer = 'Digital'
         break
     else:
         print('Opção invalida! Por favor selecione 1 ou 2!')
@@ -29,7 +32,7 @@ horas_study = int(input('\nQuantas horas por semana você dedica aos livros por 
 horas_entertain = int(input('\nQuantas horas por semana você dedica aos livros por entretenimento: '))
 
 def mensagem():
-    print(f'\n{nome} Seja muito bem vindo(a) ao Bookyu!!')
+    print(f'\n{nome.capitalize()} seja muito bem vindo(a) ao Bookyu!!')
     dados = {
     # Regiao Norte
     "acre": "O Seringal - Miguel Jeronymo Ferrante",
@@ -68,8 +71,9 @@ def mensagem():
     "rio_grande_do_sul": "O Tempo e o Vento - Érico Veríssimo",
     "santa_catarina": "Broquéis - Cruz e Sousa"}
 
-    if estado in dados:
-        print(f'Com base no seu estado {estado}, o Bookyu recomenda: {dados[estado]}')
+    estado_formatado = estado.lower().replace(' ', '_')
+    if estado_formatado in dados:
+        print(f'Com base no seu estado {estado}, o Bookyu recomenda: {dados[estado_formatado]}')
     else:
         print('Houve um erro inesperado :(')
 
@@ -83,30 +87,29 @@ def mensagem_2(cidade):
 
 def estimativas():
     total_livros = livros_fis + livros_dig
-    print(f'\n{nome} Você irá ler {total_livros * 5} livros em 5 anos, se continuar com a mesma frequência de leitura.')
+    print(f'\n{nome.capitalize()}, se você mantiver essa frequência de leitura, irá ler {total_livros * 5} livros nos próximos 5 anos!')
 
     if livros_study >= 40:
-        print(f'Você é um excelente leitor estudioso, se continuar no mesmo ritmo, você irá ler {livros_study * 5} livros de estudo em 5 anos. Parabens! Sua média de leitura é excelente! Continue assim.')
+        print(f'\n**Parabéns! Você é um(a) leitor(a) dedicado(a) aos estudos!** Com esse ritmo, você lerá aproximadamente {livros_study * 5} livros de estudo em 5 anos. \nSua média é excelente! Continue explorando e aprendendo!')
     elif livros_study >= 20:
-        print(f'Você é um razoavel leitor estudioso, se continuar no mesmo ritmo, você irá ler {livros_study * 5} livros de estudo em 5 anos. Sua média de leitura é razoavel! Tente se desafiar a ser um excelente leitor, lendo 40 livros por ano!')
+        print(f'\nVocê tem um bom ritmo de leitura para estudos! Ao continuar assim, você lerá cerca de {livros_study * 5} livros de estudo em 5 anos. \nQue tal um pequeno desafio para se tornar um(a) leitor(a) ainda mais voraz? Tente alcançar 40 livros por ano!')
     elif livros_study >= 0:
-        print(f'Você é um mal leitor estudioso, se continuar no mesmo ritmo, você irá ler apenas {livros_study * 5} livros de estudo em 5 anos. Sua média de leitura é baixa! Tente se desafiar a ler mais todos os dias, para ser um excelente leitor!')
-    else:
-        print('Ocorreu algum erro desconhecido :(')
+        print(f'\nSua jornada de leitura para estudos está apenas começando! Se continuar nesse ritmo, você lerá cerca de {livros_study * 5} livros de estudo em 5 anos. \nCada página conta! Que tal definir uma meta para ler um pouco mais a cada dia e descobrir o quanto você pode aprender?')
+
         
     if livros_entertain >= 40:
-        print(f'\nVocê é um excelente leitor de entretenimento, se continuar com a mesma frequencia, você irá ler {livros_entertain * 5} livros de entretenimento em 5 anos. Parabens! Sua média de leitura é excelente! Continue assim <3')
+        print(f'\n**Excelente! Você é um(a) leitor(a) de entretenimento superengajado(a)!** Mantendo essa frequência, você desfrutará de {livros_entertain * 5} livros de entretenimento em 5 anos. \nQue maravilha! Continue se divertindo e explorando novas histórias!')
     elif livros_entertain >= 20:
-        print(f'\nVocê é um razoavel leitor de entretenimento, se continuar com a mesma frequencia, você irá ler {livros_entertain * 5} livros de entretenimento em 5 anos. Sua média de leitura é razoavel! Tente se desafiar a ser um excelente leitor, lendo 40 livros por ano!')
+        print(f'\nVocê tem um bom hábito de leitura para entretenimento! Se mantiver o ritmo, lerá aproximadamente {livros_entertain * 5} livros de entretenimento em 5 anos. \nPara turbinar ainda mais sua leitura, que tal se desafiar a descobrir 40 livros novos por ano?')
     elif livros_entertain >= 0:
-        print(f'\nVocê é um mal leitor de entretenimento, se continuar com a mesma frequencia, você irá ler apenas {livros_entertain * 5} livros de entretenimento em 5 anos. Sua média de leitura é baixa! Tente se desafiar a ler mais todos os dias, para ser um excelente leitor!')
+        print(f'\nPara suas leituras de entretenimento, se continuar nesse ritmo, você lerá cerca de {livros_entertain * 5} livros em 5 anos. \nLembre-se, o importante é começar! Pequenas leituras diárias podem te levar a grandes aventuras. Que tal explorar um novo gênero?')
     else:
         print('Ocorreu algum erro desconhecido :(')
 
 
 
 def horas_ano():
-    print(f"\nVocê se dedica aproximadamente: {horas_study * 52} horas de estudos por ano e {horas_entertain * 52} horas de leituras por entretenimento por ano!")
+    print(f"\nVocê se dedica aproximadamente: {horas_study * 52} horas de estudos por ano e {horas_entertain * 52} horas de leituras de entretenimento por ano!")
 
 
 
@@ -128,12 +131,51 @@ def desafio_leitura():
     elif livros_dig + livros_fis < 30:
         print('\nDesafio Bookyu! Tente ler 2 livros por mês este ano, você consegue! :)')
     else:
-        print('\nDesafio Bookyu! Experimente explorar um livro de um gênero novo!')
+        print('\nDesafio Bookyu! Experimente explorar um livro de um gênero novo! ')
 
 
-mensagem()
-horas_ano()
-mensagem_2(cidade)
-estimativas()
-desafio_leitura()
+
+def capturar_saida(func):
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        func()
+    return buffer.getvalue()
+
+def mostrar_janela():
+
+    saida_mensagem = capturar_saida(mensagem)
+    saida_horas = capturar_saida(horas_ano)
+    saida_estimativas = capturar_saida(estimativas)
+    saida_desafio = capturar_saida(desafio_leitura)
+
+
+    cidade_formatada = cidade.replace(" ", "+")
+    link_maps = f'https://www.google.com/maps/search/livrarias+em+{cidade_formatada}'
+
+    def abrir_link(event):
+        webbrowser.open_new(link_maps)
+
+
+    root = tk.Tk()
+    root.title("Resumo Bookyu")
+
+    texto_total = (
+        saida_mensagem +
+        saida_horas +
+        saida_estimativas +
+        saida_desafio
+    )
+
+    label = tk.Label(root, text=texto_total, justify="left", wraplength=500)
+    label.pack(padx=10, pady=10)
+
+    link_label = tk.Label(root, text=f"Livrarias próximas de {cidade}", fg="blue", cursor="hand2")
+    link_label.pack()
+    link_label.bind("<Button-1>", abrir_link)
+
+    tk.Button(root, text="Fechar", command=root.destroy).pack(pady=10)
+    root.mainloop()
+
+
+mostrar_janela()
 grafico_meta()
